@@ -471,7 +471,8 @@ class Model:
     def _fit_generator_one_batch_per_step(self, epoch_iterator, callback_list):
         for train_step_iterator, valid_step_iterator in epoch_iterator:
             with self._set_training_mode(True):
-                for step, (x, y) in train_step_iterator:
+                for step, batch in train_step_iterator:
+                    x,y = batch['image'], batch['label']
                     step.loss, step.metrics, _ = self._fit_batch(x, y, callback=callback_list, step=step.number)
                     step.size = self.get_batch_size(x, y)
 
